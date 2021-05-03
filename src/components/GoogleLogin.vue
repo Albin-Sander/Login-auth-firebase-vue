@@ -27,6 +27,7 @@ export default {
         .signInWithPopup(provider)
         .then((result) => {
           console.log(result);
+
           this.$router.push({ path: `/secret` });
         })
         .catch((err) => {

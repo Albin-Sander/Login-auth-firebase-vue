@@ -70,7 +70,7 @@
                       active ? 'bg-gray-100' : '',
                       'block px-4 py-2 text-sm text-gray-700',
                     ]"
-                    >Your Profile</a
+                    >Signed in as: {{ email }}</a
                   >
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
@@ -161,6 +161,7 @@ export default {
   data() {
     return {
       loggedIn: Boolean,
+      email: String,
     };
   },
   methods: {
@@ -177,7 +178,8 @@ export default {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           // User is signed in.
-          console.log("signed in");
+          console.log("signed in" + user.email);
+          this.email = user.email;
           this.loggedIn = true;
         } else {
           // No user is signed in.
