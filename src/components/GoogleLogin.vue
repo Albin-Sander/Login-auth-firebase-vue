@@ -15,25 +15,9 @@
 </template>
 
 <script>
-import { firebase } from "@firebase/app";
-import "@firebase/auth";
 export default {
   methods: {
-    googleLogin() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-          console.log(result);
-
-          this.$router.push({ path: `/secret` });
-        })
-        .catch((err) => {
-          alert("Oops" + err.message);
-        });
-    },
+    googleLogin() {},
   },
 };
 </script>

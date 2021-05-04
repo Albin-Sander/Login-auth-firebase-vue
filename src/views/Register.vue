@@ -88,14 +88,9 @@
 </template>
 
 <script>
-import { firebase } from "@firebase/app";
-import "@firebase/auth";
-import GoogleLogin from "../components/GoogleLogin";
-
+import { supabase } from "../main";
 export default {
-  components: {
-    GoogleLogin,
-  },
+  components: {},
   data() {
     return {
       email: "",
@@ -105,29 +100,16 @@ export default {
   },
   methods: {
     async pressed() {
-      try {
-        const user = firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.email, this.password);
+      let { user, error } = await supabase.auth.signUp({
+        email: this.email,
+        password: this.password,
+      });
+      if (error) {
+        console.log(error);
+      } else {
         console.log(user);
         this.$router.push({ path: `/secret` });
-      } catch (err) {
-        console.log(err);
       }
-    },
-    googleLogin() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-          console.log(result);
-          this.$router.push({ path: `/secret` });
-        })
-        .catch((err) => {
-          alert("Oops" + err.message);
-        });
     },
   },
 };

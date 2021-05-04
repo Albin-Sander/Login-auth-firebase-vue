@@ -125,9 +125,9 @@
 </template>
 
 <script>
+import { supabase } from "../main";
 import { ref } from "vue";
-import { firebase } from "@firebase/app";
-import "@firebase/auth";
+
 import {
   Disclosure,
   DisclosureButton,
@@ -166,28 +166,13 @@ export default {
   },
   methods: {
     async signOut() {
-      try {
-        const data = firebase.auth().signOut();
-        console.log(data);
-        this.$router.push({ path: `/login` });
-      } catch (err) {
-        console.log(err);
+      let { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.log(error);
       }
     },
-    setupFirebase() {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          // User is signed in.
-          console.log("signed in" + user.email);
-          this.email = user.email;
-          this.loggedIn = true;
-        } else {
-          // No user is signed in.
-          this.loggedIn = false;
-          console.log("signed out", this.loggedIn);
-        }
-      });
-    },
+    setupFirebase() {},
   },
   setup() {
     const open = ref(false);

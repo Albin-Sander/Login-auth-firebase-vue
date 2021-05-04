@@ -87,13 +87,9 @@
 </template>
 
 <script>
-import { firebase } from "@firebase/app";
-import "@firebase/auth";
-import GoogleLogin from "../components/GoogleLogin";
+import { supabase } from "../main";
 export default {
-  components: {
-    GoogleLogin,
-  },
+  components: {},
   data() {
     return {
       email: "",
@@ -103,14 +99,15 @@ export default {
   },
   methods: {
     async pressed() {
-      try {
-        const val = await firebase
-          .auth()
-          .signInWithEmailAndPassword(this.email, this.password);
-        console.log(val);
+      let { user, error } = await supabase.auth.signIn({
+        email: this.email,
+        password: this.password,
+      });
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(user);
         this.$router.push({ path: `/secret` });
-      } catch (err) {
-        this.error = err;
       }
     },
   },
