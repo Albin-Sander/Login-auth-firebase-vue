@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import "./assets/tailwind.css";
 import firebase from "firebase/app";
+import "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAjlPCcq2WkOp5Ta8EC2wVGl4dTQiaNeVg",
@@ -15,6 +16,14 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore()
+
+  db.collection('movies').get().then((snapshot) => {
+    snapshot.docs.forEach(doc => {
+      console.log(doc.data().name)
+    })
+  })
 
 let app;
 
